@@ -18,7 +18,7 @@ const MainPage = () => {
     if (timer.current) {
       clearTimeout(timer.current)
     }
-    fetch("https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty")
+    fetch(`https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty&orderBy="$key"&limitToFirst=100`)
       .then(resolve => resolve.json())
       .then(res => {
         const resArr: string[] = []
