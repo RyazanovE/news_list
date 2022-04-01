@@ -8,53 +8,63 @@ import { setFetchArr } from "../store/reducers/fetchArrReducer";
 
 const MainPage = () => {
   const [isLoading, setisLoading] = useState<boolean>(true);
-  const dispatch = useDispatch()
-  const newsArr: INews[] = useSelector((state:RootState) => (state.fetchArrReducer.fetchArr))
+  const dispatch = useDispatch();
+  const newsArr: INews[] = useSelector(
+    (state: RootState) => state.fetchArrReducer.fetchArr
+  );
 
-  let timer: any = useRef(); 
+  let timer: any = useRef();
 
   function fetchNews() {
-    setisLoading(true)
+    setisLoading(true);
     if (timer.current) {
-      clearTimeout(timer.current)
+      clearTimeout(timer.current);
     }
-    fetch(`https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty&orderBy="$key"&limitToFirst=100`)
-      .then(resolve => resolve.json())
-      .then(res => {
-        const resArr: string[] = []
+    fetch(
+      `https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty&orderBy="$key"&limitToFirst=100`
+    )
+      .then((resolve) => resolve.json())
+      .then((res) => {
+        const resArr: string[] = [];
         for (let i = 0; i < 100; i++) {
-          resArr.push(`https://hacker-news.firebaseio.com/v0/item/${res[i]}.json?print=pretty`)
+          resArr.push(
+            `https://hacker-news.firebaseio.com/v0/item/${res[i]}.json?print=pretty`
+          );
         }
-
-        Promise.all(resArr.map(url =>
-          fetch(url).then(resp => resp.json())
-        )).then(json => {
-          dispatch(setFetchArr(json))
-          setisLoading(false)
-          timer.current = setInterval(() => {
-            fetchNews()
-          }, 60 * 1000)
-        })
+        return resArr;
       })
-
-
+      .then((resArr) => {
+        Promise.all(
+          resArr.map((url) => fetch(url).then((resp) => resp.json()))
+        ).then((json) => {
+          dispatch(setFetchArr(json));
+          setisLoading(false);
+          timer.current = setInterval(() => {
+            fetchNews();
+          }, 60 * 1000);
+        });
+      });
   }
 
-
-
   useEffect(() => {
-    fetchNews()
+    fetchNews();
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer.current);
     };
   }, []);
-
 
   return (
     <>
       {!isLoading ? (
         <>
-          <button className="update-button" onClick={() => {fetchNews()}}>Обновить</button>
+          <button
+            className="update-button"
+            onClick={() => {
+              fetchNews();
+            }}
+          >
+            Обновить
+          </button>
           <List<INews>
             ListArr={newsArr}
             renderItem={(item) => <NewsItem key={item.id} item={item} />}
@@ -63,7 +73,7 @@ const MainPage = () => {
           </List>
         </>
       ) : (
-        <img className="loader" src='/images/shariki.gif'></img>
+        <img className="loader" src="/images/shariki.gif"></img>
       )}
     </>
   );

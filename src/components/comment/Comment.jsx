@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 
 export const Comment = ({ idArr }) => {
   const [currentComment, setCurrentComment] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+  let timer = useRef();
 
   function fetchComments() {
     if (!idArr.kids) {
@@ -19,12 +20,18 @@ export const Comment = ({ idArr }) => {
     ).then((res) => {
       setCurrentComment(res);
       setisLoading(false);
+      timer.current = setInterval(() => {
+        fetchNews();
+      }, 60 * 1000);
       return;
     });
   }
 
   useEffect(() => {
     fetchComments();
+    return () => {
+      clearTimeout(timer.current);
+    };
   }, []);
 
   return (
