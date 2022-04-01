@@ -105,9 +105,14 @@ const NewsItemPage = () => {
   }
 
   useEffect(() => {
-    fetchComments();
+    let isMounted = true
+    if (isMounted) {
+      fetchComments();
+    }
+    
     
     return () => {
+      isMounted = false
       clearTimeout(timer);
     };
   }, []);
