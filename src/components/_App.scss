@@ -1,0 +1,116 @@
+
+
+.wrapper {
+  width: 100vw;
+}
+
+.container {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.userlist-container {
+  width: 100%;
+  padding: 20px 30px;
+
+}
+
+.userlist {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.users-count {
+  margin-left: auto;
+}
+
+.user-page-container {
+  margin: 0 auto;
+  width: 90%;
+  &__submit-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15px;
+    width: 85px;
+    height: 24.12px;
+    border-radius: 5px;
+    float: right;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 14px;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.user-page-container__header {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  &-title {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  button {
+    background-color: #4b51ef;
+    color: white;
+    font-weight: 400;
+    font-size: 12px;
+    width: 116.67px;
+    height: 27.12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+ 
+
+}
+
+.user-page-table {
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: 8px;
+  border: 1px solid #f3f3f3;
+
+  &__comment {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__textarea {
+    height: 55px;
+    border: 1px solid #d8d8d8;
+    border-radius: 5px;
+  }
+}
+
+.loader {
+  width: 60vh;
+  margin: auto;
+  transform: translateY(20vh);
+}
+
+
+.empty {
+  border: 1px solid red !important;
+}
+
+
+.update-button {
+  cursor: pointer;
+  &:hover {
+    background-color: grey;
+  }
+}
+
+.button-back {
+  margin: auto;
+  cursor: pointer;
+
+  transition: background-color 0.1s ease;
+  &:hover {
+    background-color: grey;
+  }
+}

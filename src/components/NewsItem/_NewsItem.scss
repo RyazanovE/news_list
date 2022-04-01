@@ -1,0 +1,26 @@
+.newsitem {
+  margin: 14px 0;
+  width: 100%;
+  padding: 20px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 1rem;
+
+  &__value {
+    display: inline;
+    margin-left: 1rem;
+  }
+
+  &__text {
+    color: black;
+    font-size: 1rem;
+    span {
+      color: #a3a3a3;
+    }
+  }
+}
