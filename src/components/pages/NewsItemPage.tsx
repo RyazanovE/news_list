@@ -6,8 +6,18 @@ const NewsItemPage = () => {
   let timer: any = useRef();
   const [isLoading, setisLoading] = useState<boolean>(true);
   const [currentNewsItem, setcurrentNewsItem] = useState<any>([]);
-  const navigate = useHistory()
-
+  const navigate = useHistory();
+  const arrToDisplay = [
+    { title: "Заголовок:", value: currentNewsItem.title },
+    { title: "Ссылка:", value: currentNewsItem.url },
+    {
+      title: "Дата:",
+      value: new Date(currentNewsItem.time * 1000).toLocaleDateString(
+        currentNewsItem.time
+      ),
+    },
+    { title: "Автор:", value: currentNewsItem.by },
+  ];
 
   // async function recursiveAll(idArr: string[], resultArr: any[]) {
 
@@ -105,31 +115,36 @@ const NewsItemPage = () => {
   }
 
   useEffect(() => {
-
-      fetchComments();
-      
+    fetchComments();
     return () => {
       clearTimeout(timer.current);
     };
   }, []);
 
-  const arrToDisplay = [
-    { title: "Заголовок:", value: currentNewsItem.title },
-    { title: "Ссылка:", value: currentNewsItem.url},
-    { title: "Дата:", value: new Date(currentNewsItem.time * 1000).toLocaleDateString(
-      currentNewsItem.time
-    ) },
-    { title: "Автор:", value: currentNewsItem.by },
-  ];
-
   return (
     <>
       <div className="newsitem">
         {arrToDisplay.map((item) => {
-          return <div key={item.title}><span className="newsitem__title">{item.title}</span>{item.title==="Заголовок:" ? <h3 className="newsitem__value">{item.value}</h3> : <span className="newsitem__value">{item.value}</span>}</div>
+          return (
+            <div key={item.title}>
+              <span className="newsitem__title">{item.title}</span>
+              {item.title === "Заголовок:" ? (
+                <h3 className="newsitem__value">{item.value}</h3>
+              ) : (
+                <span className="newsitem__value">{item.value}</span>
+              )}
+            </div>
+          );
         })}
-      </div >
-      <button onClick={() => {navigate.push("./")}} className="button-back">На главную</button>
+      </div>
+      <button
+        onClick={() => {
+          navigate.push("./");
+        }}
+        className="button-back"
+      >
+        На главную
+      </button>
       {!isLoading && <Comment idArr={currentNewsItem} />}
     </>
   );
