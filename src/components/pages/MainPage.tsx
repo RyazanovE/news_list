@@ -12,7 +12,6 @@ const MainPage = () => {
   const newsArr: INews[] = useSelector(
     (state: RootState) => state.fetchArrReducer.fetchArr
   );
-  console.log(newsArr)
 
   let timer: any = useRef();
 
