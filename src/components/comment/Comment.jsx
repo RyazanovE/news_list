@@ -50,9 +50,9 @@ export const CommentNode = ({ node }) => {
   const [childVisible, setChildVisible] = useState(false);
 
   return (
-    <li>
-      <div
-        className="comment newsitem"
+    <li >
+      <div 
+        className={node.kids ? "comment_clickable comment" : "comment" }
         onClick={() => {
           setChildVisible((v) => !v);
         }}

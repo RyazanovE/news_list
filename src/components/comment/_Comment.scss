@@ -1,7 +1,26 @@
 .comment {
+	margin: 14px 0;
+	width: 100%;
+	padding: 20px;
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	background-color: #f3f3f3;
+	border-radius: 10px;
+	font-weight: 400;
+	font-size: 1rem;
+
 	font-size: 1rem;
 
 	&__title {
 		color: rgb(139, 131, 131);
 	}
 }
+
+
+
+
+.comment_clickable {
+	background-color: rgb(202, 196, 196);
+	cursor: pointer;
+  }
