@@ -1,81 +1,58 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import List from "../List/List";
-import { RootState } from "../store/store";
 import { INews } from "../types/types";
 import NewsItem from "../NewsItem/NewsItem";
-import { setFetchArr } from "../store/reducers/fetchArrReducer";
+import useScroll from "../hooks/useScroll";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import fetchNews from "../store/reducers/actionCreators";
 
 const MainPage = () => {
-  const [isLoading, setisLoading] = useState<boolean>(true);
-  const dispatch = useDispatch();
-  const newsArr: INews[] = useSelector(
-    (state: RootState) => state.fetchArrReducer.fetchArr
-  );
+  const {fetchArr, isLoading, error} = useAppSelector(state => state.fetchArrReducer)
+  const [page, setPage] = useState<number>(1)
 
-  let timer: any = useRef();
 
-  function fetchNews() {
-    setisLoading(true);
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
-    fetch(
-      `https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty&orderBy="$key"&limitToFirst=100`
-    )
-      .then((resolve) => resolve.json())
-      .then((res) => {
-        const resArr: string[] = [];
-        for (let i = 0; i < 100; i++) {
-          resArr.push(
-            `https://hacker-news.firebaseio.com/v0/item/${res[i]}.json?print=pretty`
-          );
-        }
-        return resArr;
-      })
-      .then((resArr) => {
-        Promise.all(
-          resArr.map((url) => fetch(url).then((resp) => resp.json()))
-        ).then((json) => {
-          dispatch(setFetchArr(json));
-          setisLoading(false);
-          timer.current = setInterval(() => {
-            fetchNews();
-          }, 60 * 1000);
-        });
-      });
-  }
+
+  const dispatch = useAppDispatch();
+  
+  const childRef = useRef()
+ 
+ 
+  useScroll(isLoading, null ,  childRef, () => {
+ 
+    setPage(p=>p+1)
+    fetchNews(dispatch, page+1);
+    
+  })
 
   useEffect(() => {
-    fetchNews();
-    return () => {
-      clearTimeout(timer.current);
-    };
+    fetchNews(dispatch, page);
   }, []);
 
+
   return (
-    <>
-      {!isLoading ? (
-        <>
+    <div  className="userlist-container" >
+      {!isLoading || page>1? (
+        <div className="userlist" >  
           <button
             className="update-button"
             onClick={() => {
-              fetchNews();
+              fetchNews(dispatch, page);
             }}
           >
             Обновить
           </button>
           <List<INews>
-            ListArr={newsArr}
+            ListArr={fetchArr}
             renderItem={(item) => <NewsItem key={item.id} item={item} />}
           >
             Список новостей
           </List>
-        </>
+          <div ref={childRef}></div>
+        </div>
       ) : (
         <img className="loader" src="/images/shariki.gif"></img>
       )}
-    </>
+    </div>
   );
 };
 

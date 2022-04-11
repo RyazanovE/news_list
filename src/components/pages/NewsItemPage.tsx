@@ -49,7 +49,7 @@ const NewsItemPage = () => {
   }, []);
 
   return (
-    <>
+     <div  className="userlist-container" >
       <div className="newsitem">
         {arrToDisplay.map((item) => {
           return (
@@ -73,7 +73,7 @@ const NewsItemPage = () => {
         На главную
       </button>
       {!isLoading && <Comment idArr={currentNewsItem} />}
-    </>
+    </div>
   );
 };
 

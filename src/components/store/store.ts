@@ -1,13 +1,15 @@
-import { fetchArrReducer } from "./reducers/fetchArrReducer";
-import {createStore, combineReducers} from 'redux'
+import  fetchArrReducer from "./reducers/fetchArrReducer";
+import { configureStore } from '@reduxjs/toolkit'
 
 
 
- export const rootReducer = combineReducers({
-    fetchArrReducer,
-  });
+export const store = configureStore({
+  reducer: {
+   fetchArrReducer,
+  },
+})
 
-
-  export const store = createStore(rootReducer)
-
-  export type RootState = ReturnType<typeof rootReducer>
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch
